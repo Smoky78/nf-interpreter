@@ -1,0 +1,22 @@
+name: Build ESP32 Device Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target Board (e.g. XIAO_ESP32C3)'
+        required: true
+        default: 'XIAO_ESP32C3'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build Firmware
+        uses: nanoframework/nanoframework-images-action@main
+        with:
+          target: ${{ github.event.inputs.target }}
+          branch: 'main'
