@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: 'Target Board XIAO_ESP32C3 with Graphics'
+        description: 'Target Board'
         required: true
         default: 'XIAO_ESP32C3'
 
@@ -18,8 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build Firmware
-        uses: nanoframework/nanoframework-images-action@main
+        uses: nanoframework/nanoframework-images-action-artifacts@main
         with:
           target: ${{ github.event.inputs.target }}
-          # Wir geben explizit an, wo die Cloud-Build-Ressourcen liegen
           branch: 'main'
