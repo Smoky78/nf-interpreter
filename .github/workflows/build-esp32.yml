@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: 'Target Board XIAO_ESP32C3 with adde Graphics'
+        description: 'Target Board XIAO_ESP32C3 with Graphics'
         required: true
         default: 'XIAO_ESP32C3'
 
@@ -13,19 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Build Environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake ninja-build python3 python3-pip
-          pip3 install esptool
-
       - name: Build Firmware
-        shell: bash
-        run: |
-          # Wir nutzen das im Repo vorhandene Build-Skript
-          chmod +x ./build.sh
-          ./build.sh --target ${{ github.event.inputs.target }}
+        uses: nanoframework/nanoframework-images-action@main
+        with:
+          target: ${{ github.event.inputs.target }}
+          # Wir geben explizit an, wo die Cloud-Build-Ressourcen liegen
+          branch: 'main'
