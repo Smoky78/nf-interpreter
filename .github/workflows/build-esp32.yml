@@ -4,20 +4,28 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: 'Target Board XIAO_ESP32C3 with added Graphics'
+        description: 'Target Board XIAO_ESP32C3 with adde Graphics'
         required: true
         default: 'XIAO_ESP32C3'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: nanoframework/nano-build-container:esp32-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Build Environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build python3 python3-pip
+          pip3 install esptool
 
       - name: Build Firmware
         shell: bash
         run: |
-          ./build.sh --target ${{ github.event.inputs.target }} --buildpath /github/home/build
+          # Wir nutzen das im Repo vorhandene Build-Skript
+          chmod +x ./build.sh
+          ./build.sh --target ${{ github.event.inputs.target }}
